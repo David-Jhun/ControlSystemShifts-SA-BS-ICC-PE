@@ -1,7 +1,6 @@
 package model;
 
-public class User {
-	
+public class User implements Comparable<User>{
 	
 	private String typeOfDocument;
 	private String documentNumber;
@@ -61,6 +60,16 @@ public class User {
 		data += "\nNames: " + names;
 		data += "\nLast names: " + lastNames;
 		return data;
+	}
+
+	@Override
+	public int compareTo(User aUser) {
+		if( documentNumber.compareTo(aUser.documentNumber) > 0 )
+			return 1;
+		else if( documentNumber.compareTo(aUser.documentNumber) < 0 )
+			return -1;
+		else
+			return 0;
 	}
 
 }
