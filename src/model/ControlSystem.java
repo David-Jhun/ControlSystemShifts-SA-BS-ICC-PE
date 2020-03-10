@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 import exceptions.ExistingDocumentException;
@@ -98,6 +99,16 @@ public class ControlSystem {
 				}
 			}
 		}
+	}
+	
+	public void sortUsersByTOD_DN() {
+		Comparator<User> xd = new CompareUsersByTOD_DN();
+		users.sort(xd);
+	}
+	
+	public void sortUsersByAD_PE() {
+		Comparator<User> xd = new CompareUsersByAD_PE();
+		users.sort(xd);
 	}
 	
 	public User binarySearchUsers( String documentNumber ) {

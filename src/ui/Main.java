@@ -61,7 +61,11 @@ public class Main {
 					menuGenerateSpecialShift();
 					break;
 				default:
-					System.out.println("Thanks for using the program.");
+					if( options != 8 ) {
+						System.out.println("Enter a valid option.");
+					}else {
+						System.out.println("Thanks for using the program.");
+					}
 					break;
 				}
 			}catch( InputMismatchException e ) {

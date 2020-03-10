@@ -63,13 +63,20 @@ public class User implements Comparable<User>{
 	}
 
 	@Override
-	public int compareTo(User aUser) {
-		if( documentNumber.compareTo(aUser.documentNumber) > 0 )
-			return 1;
-		else if( documentNumber.compareTo(aUser.documentNumber) < 0 )
-			return -1;
-		else
-			return 0;
+	public int compareTo(User user) {
+		int comparation = 0;
+		if( names.compareTo(user.names) > 0 ) {
+			comparation = 1;
+		}else if( names.compareTo(user.names) < 0 ) {
+			comparation = -1;
+		}else {
+			if( lastNames.compareTo(user.lastNames) > 0 ) {
+				comparation = 1;
+			}else if( lastNames.compareTo(user.lastNames) < 0 ) {
+				comparation = -1;
+			}
+		}
+		return comparation;
 	}
 
 }
