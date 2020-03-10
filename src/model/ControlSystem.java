@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import exceptions.ExistingDocumentException;
 
@@ -92,19 +93,22 @@ public class ControlSystem {
 	}
 	
 	public String addShift() {
+		Random r = new Random();
 		String data = "";
-		if( letter > 90 )
-			letter = 65;
-		if( number > 99 ) {
-			number = 0;
-			changeLetter();
+		if( !(specialShifts.isEmpty()) ) {
 			if( letter > 90 )
 				letter = 65;
+			if( number > 99 ) {
+				number = 0;
+				changeLetter();
+				if( letter > 90 )
+					letter = 65;
+			}
+			Shift shift = new Shift(letter, number, specialShifts.get(r.nextInt(specialShifts.size())));
+			data = "" + shift;
+			shifts.add(shift);
+			changeNumber();
 		}
-		Shift shift = new Shift(letter, number);
-		data = "" + shift;
-		shifts.add(shift);
-		changeNumber();
 		return data;
 	}
 	

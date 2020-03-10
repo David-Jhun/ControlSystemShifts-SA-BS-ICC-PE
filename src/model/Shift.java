@@ -9,12 +9,15 @@ public class Shift {
 	private int number;
 	private String complete;
 	
-	public Shift(int letter, int number) {
+	private TypeOfShift type;
+	
+	public Shift(int letter, int number, TypeOfShift type) {
 		attended = false;
 		notAttended = false;
 		assigned = false;
 		this.letter = (char)letter;
 		this.number = number;
+		this.type = type;
 		complete = setInformation();
 	}
 
@@ -57,7 +60,11 @@ public class Shift {
 	public String getComplete() {
 		return complete;
 	}
-	
+
+	public TypeOfShift getType() {
+		return type;
+	}
+
 	public String setInformation() {
 		String data = "";
 		if( number < 10 ) {
