@@ -56,6 +56,34 @@ public class ControlSystem {
 		return user;
 	}
 	
+	public void sortUsersBySelectionSort() {
+		for( int i = 0 ; i < users.size() - 1 ; i++ ) {
+			User minor = users.get(i);
+			int which = i;
+			for( int j = i + 1 ; j < users.size() ; j++ ) {
+				if( users.get(j).compareTo(minor) < 0 ) {
+					minor = users.get(j);
+					which = j;
+				}
+			}
+			User temp = users.get(i);
+			users.set(i, minor);
+			users.set(which, temp);
+		}
+	}
+	
+	public void sortUsersByBubbleSort() {
+		for( int i = users.size() ; i > 0 ; i-- ) {
+			for( int j = 0 ; j < i - 1 ; j++ ) {
+				if( users.get(j).compareTo(users.get(j + 1)) > 0 ) {
+					User temp = users.get(j);
+					users.set(j, users.get(j + 1));
+					users.set(j + 1, temp);
+				}
+			}
+		}
+	}
+	
 	public void sortUsersByInsertionSort() {
 		for( int i = 1 ; i < users.size() ; i++ ) {
 			User insert = users.get(i);
