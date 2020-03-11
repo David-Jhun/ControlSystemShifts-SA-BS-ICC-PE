@@ -170,9 +170,13 @@ public class ControlSystem {
 		br.close();
 	}
 	
-	public String addShift() {
+	public void addSpecialShift( String name, double duration ) {
+		TypeOfShift special = new TypeOfShift( name, duration );
+		specialShifts.add(special);
+	}
+	
+	public void addShift() {
 		Random r = new Random();
-		String data = "";
 		if( !(specialShifts.isEmpty()) ) {
 			if( letter > 90 )
 				letter = 65;
@@ -183,16 +187,16 @@ public class ControlSystem {
 					letter = 65;
 			}
 			Shift shift = new Shift(letter, number, specialShifts.get(r.nextInt(specialShifts.size())));
-			data = "" + shift;
-			shifts.add(shift);
-			changeNumber();
+			if( !(users.isEmpty()) ) {
+				for( int i = 0 ; i < users.size() ; i++ ) {
+					if( users.get(i).getShift() == null ) {
+						
+					}
+				}
+				shifts.add(shift);
+				changeNumber();
+			}
 		}
-		return data;
-	}
-	
-	public void addSpecialShift( String name, double duration ) {
-		TypeOfShift special = new TypeOfShift( name, duration );
-		specialShifts.add(special);
 	}
 	
 	public void assignShiftToUser(String documentNumber, String dataShift) {
