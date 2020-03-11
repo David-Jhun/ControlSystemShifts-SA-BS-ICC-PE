@@ -190,7 +190,7 @@ public class ControlSystem {
 			if( !(users.isEmpty()) ) {
 				for( int i = 0 ; i < users.size() ; i++ ) {
 					if( users.get(i).getShift() == null ) {
-						
+						users.get(i).setShift(shift);
 					}
 				}
 				shifts.add(shift);

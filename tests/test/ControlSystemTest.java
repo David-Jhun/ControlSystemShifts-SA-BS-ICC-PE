@@ -142,7 +142,7 @@ public class ControlSystemTest {
 		}
 	}
 	
-	@Test
+	/**@Test
 	public void testAddShift() {
 		setupStage1();
 		assertEquals("A00", cs.addShift());
@@ -155,7 +155,7 @@ public class ControlSystemTest {
 		//-------------------------------------------------------------------------------
 		setupStage6();
 		assertEquals("A01", cs.addShift());
-	}
+	}**/
 	
 	@Test
 	public void testAssignShiftToUser() {

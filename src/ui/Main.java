@@ -145,7 +145,7 @@ public class Main {
 	}
 	
 	public void menuGenerateShift() {
-		System.out.println("The shift generated was: " + cs.addShift());
+		System.out.println("The shift generated was: ");
 	}
 	
 	public void menuAssignShiftToUser() {
@@ -160,7 +160,7 @@ public class Main {
 					System.out.println("The shift was successfully assigned.");
 					cs.assignShiftToUser(documentNumber, dataShift);
 				}else {
-					String shift = cs.addShift();
+					String shift = null;
 					System.out.println("The shift you tried to assign to the user doesn't exists.");
 					System.out.println("This is the shift that the system has assigned to the user: " + shift);
 					cs.assignShiftToUser(documentNumber, shift);
@@ -172,7 +172,7 @@ public class Main {
 					System.out.println("The shift was successfully assigned.");
 					cs.assignShiftToUser(documentNumber, dataShift);
 				}else {
-					String shift = cs.addShift();
+					String shift = null;
 					System.out.println("The shift you tried to assign to the user doesn't exists.");
 					System.out.println("This is the shift that the system has assigned to the user: " + shift);
 					cs.assignShiftToUser(documentNumber, shift);
