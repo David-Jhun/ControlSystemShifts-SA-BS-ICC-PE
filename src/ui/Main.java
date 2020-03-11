@@ -1,5 +1,7 @@
 package ui;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -60,11 +62,25 @@ public class Main {
 				case 7:
 					menuGenerateSpecialShift();
 					break;
+				case 9:
+					System.out.println(cs.getUsers().get(0));
+					break;
 				default:
 					if( options != 8 ) {
 						System.out.println("Enter a valid option.");
 					}else {
 						System.out.println("Thanks for using the program.");
+					}
+					try {
+						cs.saveSystemInformation();
+					}catch( FileNotFoundException e ) {
+						System.out.println("");
+						System.out.println("The file does not exist.");
+						System.out.println("");	
+					}catch( IOException e ) {
+						System.out.println("");
+						System.out.println("The file's name is not correct.");
+						System.out.println("");	
 					}
 					break;
 				}

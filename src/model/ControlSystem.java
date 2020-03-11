@@ -2,8 +2,13 @@ package model;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
@@ -26,12 +31,21 @@ public class ControlSystem {
 	
 	private ArrayList<TypeOfShift> specialShifts;
 	
-	public ControlSystem() {
+	public ControlSystem(){
 		letter  = 65;
 		number = 0;
 		users = new ArrayList<User>();
 		shifts = new ArrayList<Shift>();
 		specialShifts = new ArrayList<TypeOfShift>();
+		try {
+			loadSystemInformation();
+		}catch(FileNotFoundException e) {
+			
+		}catch(ClassNotFoundException e) {
+			
+		}catch(IOException e) {
+			
+		}
 	}
 
 	public ArrayList<User> getUsers() {
@@ -49,6 +63,13 @@ public class ControlSystem {
 	public void addUser(String typeOfDocument, String documentNumber, String names, String lastNames, String phone, String address) throws ExistingDocumentException{
 		User user = new User(typeOfDocument, documentNumber, names, lastNames, phone, address);
 		users.add(user);
+		try {
+			serializeUsers();
+		}catch(FileNotFoundException e) {
+			
+		}catch(IOException e) {
+			
+		}
 	}
 	
 	public User searchUser(String documentNumber) throws NullPointerException{
@@ -255,6 +276,54 @@ public class ControlSystem {
 				shifts.remove(i);
 			}
 		}
+	}
+	
+	public void saveSystemInformation() throws FileNotFoundException, IOException {
+		serializeUsers();
+		serializeShifts();
+		serializeSpecialShifts();
+	}
+
+	public void serializeUsers() throws FileNotFoundException, IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/users_information.txt"));
+		oos.writeObject(users);
+		oos.close();
+	}
+	
+	public void serializeShifts() throws IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/shifts_information.txt"));
+		oos.writeObject(shifts);
+		oos.close();
+	}
+	
+	public void serializeSpecialShifts() throws IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/special_information.txt"));
+		oos.writeObject(specialShifts);
+		oos.close();
+	}
+	
+	public void loadSystemInformation() throws FileNotFoundException, ClassNotFoundException, IOException{
+		loadUsersInformation();
+		loadShiftsInformation();
+		loadSpecialShiftsInformation();
+	}
+	
+	public void loadUsersInformation() throws FileNotFoundException, ClassNotFoundException, IOException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/users_information.txt"));
+		ArrayList<User> savedU = (ArrayList<User>) ois.readObject() ;
+		ois.close();
+	}
+	
+	public void loadShiftsInformation() throws FileNotFoundException,  ClassNotFoundException, IOException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/shifts_information.txt"));
+		ArrayList<Shift> savedS = (ArrayList<Shift>) ois.readObject();
+		ois.close();
+	}
+	
+	public void loadSpecialShiftsInformation() throws FileNotFoundException, ClassNotFoundException, IOException{
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/special_information.txt"));
+		ArrayList<TypeOfShift> savedSpecial = (ArrayList<TypeOfShift>)ois.readObject();
+		ois.close();
 	}
 	
 	public boolean existingUser(String documentNumber) {
