@@ -131,6 +131,27 @@ public class ControlSystem {
 		return u;
 	}
 	
+	public void generateRandomUsers( int quantity ) {
+		Random r = new Random();
+		int counter = 0;
+		do {
+			String typeOfDocument = "";
+			switch( r.nextInt(4) ) {
+			case 1:
+				typeOfDocument = IDENTITY_CARD;
+				break;
+			case 2:
+				typeOfDocument = CITIZENSHIP_CARD;
+				break;
+			case 3:
+				typeOfDocument = FOREIGNER_ID;
+				break;
+			}
+			
+			counter++;
+		}while( counter != quantity );
+	}
+	
 	public String addShift() {
 		Random r = new Random();
 		String data = "";
