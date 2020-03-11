@@ -1,5 +1,9 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
@@ -131,9 +135,13 @@ public class ControlSystem {
 		return u;
 	}
 	
-	public void generateRandomUsers( int quantity ) {
+	public void generateRandomUsers( int quantity ) throws IOException{
+		File f = new File("./data/dataFromUsers.txt");
+		FileReader fr = new FileReader(f);
+		BufferedReader br = new BufferedReader(fr);
 		Random r = new Random();
 		int counter = 0;
+		String line = "";
 		do {
 			String typeOfDocument = "";
 			switch( r.nextInt(4) ) {
@@ -147,9 +155,19 @@ public class ControlSystem {
 				typeOfDocument = FOREIGNER_ID;
 				break;
 			}
-			
+			line = br.readLine();
+			String[] data = line.split(",");
+			String documentNumber = data[0];
+			String names = data[1];
+			String lastNames = data[2];
+			String phone = data[3];
+			String address = data[4];
+			User u = new User(typeOfDocument, documentNumber, names, lastNames, phone, address);
+			users.add(u);
 			counter++;
-		}while( counter != quantity );
+		}while( counter != quantity && line != null );
+		fr.close();
+		br.close();
 	}
 	
 	public String addShift() {
