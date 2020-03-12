@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class User implements Comparable<User>{
 	
 	private String typeOfDocument;
@@ -8,6 +10,8 @@ public class User implements Comparable<User>{
 	private String lastNames;
 	private String phone;
 	private String address;
+	
+	private ArrayList<Shift> userShifts;
 
 	public User(String typeOfDocument, String documentNumber, String names, String lastNames, String phone, String address) {
 		this.typeOfDocument = typeOfDocument;
@@ -16,6 +20,7 @@ public class User implements Comparable<User>{
 		this.lastNames = lastNames;
 		this.phone = phone;
 		this.address = address;
+		userShifts = new ArrayList<Shift>();
 	}
 
 	public String getTypeOfDocument() {
@@ -40,6 +45,10 @@ public class User implements Comparable<User>{
 
 	public String getAddress() {
 		return address;
+	}
+	
+	public ArrayList<Shift> getUserShifts() {
+		return userShifts;
 	}
 
 	@Override
