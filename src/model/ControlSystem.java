@@ -197,8 +197,11 @@ public class ControlSystem {
 	}
 	
 	public void addShift() {
-		Random r = new Random();
-		if( !(specialShifts.isEmpty()) ) {
+		User user = null;
+		TypeOfShift special = null;
+		boolean status = false;
+		boolean status1 = false;
+		if( !(specialShifts.isEmpty()) && !(users.isEmpty()) ) {
 			if( letter > 90 )
 				letter = 65;
 			if( number > 99 ) {
@@ -207,26 +210,20 @@ public class ControlSystem {
 				if( letter > 90 )
 					letter = 65;
 			}
-			Shift shift = new Shift(letter, number, specialShifts.get(r.nextInt(specialShifts.size())));
-			if( !(users.isEmpty()) ) {
-				for( int i = 0 ; i < users.size() ; i++ ) {
-					if( users.get(i).getShift() == null ) {
-						users.get(i).setShift(shift);
-					}
-				}
-				shifts.add(shift);
-				changeNumber();
+			for( int i = 0 ; i < specialShifts.size() && !status ; i++ ) {
+				special = specialShifts.get(i);
+				status = true;
 			}
+			for( int i = 0 ; i < users.size() && !status1 ; i++ ) {
+				user = users.get(i);
+				status1 = true;
+			}
+			Shift shift = new Shift(letter, number, special, user);
+			shifts.add(shift);
+			changeNumber();
 		}
 	}
-	
-	public void assignShiftToUser(String documentNumber, String dataShift) {
-		Shift shift = searchUnassignShift(dataShift);
-		User user = searchUser(documentNumber);
-		user.setShift(shift);
-		user.getShift().setAssigned(true);
-	}
-	
+
 	public String consultShiftToAttend() {
 		String xd = "";
 		for( int i = 0 ; i < shifts.size() ; i++ ) {
@@ -247,37 +244,10 @@ public class ControlSystem {
 		return status;
 	}
 	
-	public void attendUserShift(int option, String shift) {
-		for( int i = 0 ; i < users.size() ; i++ ) {
-			if( users.get(i).getShift().getComplete().equals(shift) ) {
-				if( option == 1 ) {
-					users.get(i).getShift().setAttended(true);
-				}else if( option == 2 ) {
-					users.get(i).getShift().setNotAttended(true);
-				}
-			}
-		}
-		removeAttendedShifts();
-	}
+	public void attendShift() {
 	
-	public Shift searchUnassignShift( String dataShift ) throws NullPointerException{
-		Shift shift = null;
-		for( int i = 0 ; i < shifts.size() ; i++ ) {
-			if( shifts.get(i).isAssigned() == false && shifts.get(i).getComplete().compareTo(dataShift) == 0 ) {
-				shift = shifts.get(i);
-			}
-		}
-		return shift;
 	}
-	
-	public void removeAttendedShifts() {
-		for( int i = 0 ; i < shifts.size() ; i++ ) {
-			if( shifts.get(i).isAttended() == true || shifts.get(i).isNotAttended() == true ) {
-				shifts.remove(i);
-			}
-		}
-	}
-	
+
 	public void saveSystemInformation() throws FileNotFoundException, IOException {
 		serializeUsers();
 		serializeShifts();

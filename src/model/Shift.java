@@ -11,13 +11,16 @@ public class Shift {
 	
 	private TypeOfShift type;
 	
-	public Shift(int letter, int number, TypeOfShift type) {
+	private User user;
+	
+	public Shift(int letter, int number, TypeOfShift type, User user) {
 		attended = false;
 		notAttended = false;
 		assigned = false;
 		this.letter = (char)letter;
 		this.number = number;
 		this.type = type;
+		this.user = user;
 		complete = setInformation();
 	}
 
@@ -63,6 +66,10 @@ public class Shift {
 
 	public TypeOfShift getType() {
 		return type;
+	}
+	
+	public User getUser() {
+		return user;
 	}
 
 	public String setInformation() {
