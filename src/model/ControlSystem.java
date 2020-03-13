@@ -191,17 +191,15 @@ public class ControlSystem {
 		br.close();
 	}
 	
-	public void addSpecialShift( String name, double duration ) {
-		TypeOfShift special = new TypeOfShift( name, duration );
-		specialShifts.add(special);
+	public void addTypeOfShift( String name, double duration ) {
+		TypeOfShift newOne = new TypeOfShift(name, duration);
+		specialShifts.add(newOne);
 	}
-	
-	public void addShift() {
+
+	public void addShift( int option ) {
 		User user = null;
-		TypeOfShift special = null;
 		boolean status = false;
-		boolean status1 = false;
-		if( !(specialShifts.isEmpty()) && !(users.isEmpty()) ) {
+		if( !(users.isEmpty()) && !(specialShifts.isEmpty()) ) {
 			if( letter > 90 )
 				letter = 65;
 			if( number > 99 ) {
@@ -210,15 +208,18 @@ public class ControlSystem {
 				if( letter > 90 )
 					letter = 65;
 			}
-			for( int i = 0 ; i < specialShifts.size() && !status ; i++ ) {
-				special = specialShifts.get(i);
-				status = true;
-			}
-			for( int i = 0 ; i < users.size() && !status1 ; i++ ) {
+			for( int i = 0 ; i < users.size() && !status ; i++ ) {
 				user = users.get(i);
-				status1 = true;
+				for( int j = 0 ; j < shifts.size() ; j++ ) {
+					if( user.getNames().compareToIgnoreCase(shifts.get(j).getUser().getNames()) == 0 ) {
+						status = false;
+					}else {
+						status = true;
+					}
+				}
 			}
-			Shift shift = new Shift(letter, number, special, user);
+			Shift shift = new Shift(letter, number, specialShifts.get(option - 1), user);
+			user.getUserShifts().add(shift);
 			shifts.add(shift);
 			changeNumber();
 		}
@@ -312,6 +313,14 @@ public class ControlSystem {
 				status = true;
 		}
 		return status;
+	}
+	
+	public String showSpecialShifts() {
+		String data = "";
+		for( int i = 0 ; i < specialShifts.size() ; i++ ) {
+			data += (i + 1) + ") " + specialShifts.get(i);
+		}
+		return data;
 	}
 	
 	public void changeLetter() {

@@ -10,6 +10,7 @@ public class User implements Comparable<User>{
 	private String lastNames;
 	private String phone;
 	private String address;
+	private boolean attended;
 	
 	private ArrayList<Shift> userShifts;
 

@@ -17,5 +17,13 @@ public class TypeOfShift {
 	public double getDuration() {
 		return duration;
 	}
+
+	@Override
+	public String toString() {
+		String data = "";
+		data += "Name: " + name;
+		data += "\n Duration: " + duration;
+		return data;
+	}
 	
 }

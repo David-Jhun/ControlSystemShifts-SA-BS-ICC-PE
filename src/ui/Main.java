@@ -20,6 +20,7 @@ public class Main {
 		cs = new ControlSystem();
 		dataReader = new Scanner(System.in);
 		employeeMenu();
+		dataReader.close();
 	}
 	
 	public void employeeMenu() {
@@ -29,13 +30,13 @@ public class Main {
 				System.out.println();
 				System.out.println("Welcome to the user menu.");
 				System.out.println("Choose the option that you want the program does.");
-				System.out.println("1. Register an user.");
-				System.out.println("2. Generate a shift.");
-				System.out.println("3. Assign shift to the user.");
-				System.out.println("4. Search a user by its document number.");
-				System.out.println("5. Consult the next shift to attend.");
-				System.out.println("6. Attends a user's shift.");
-				System.out.println("7. Generate a new type of shift.");
+				System.out.println("1. Add an user.");
+				System.out.println("2. Add a new type of shift.");
+				System.out.println("3. Add a shift.");
+				System.out.println("4. .");
+				System.out.println("5. .");
+				System.out.println("6. .");
+				System.out.println("7. .");
 				System.out.println("8. Exit from the menu.");
 				System.out.println();
 				options = dataReader.nextInt();
@@ -45,9 +46,10 @@ public class Main {
 					menuAddUser();
 					break;
 				case 2:
-					menuGenerateShift();
+					menuAddTypeOfShift();
 					break;
 				case 3:
+					menuAddShift();
 					break;
 				case 4:
 					menuSearchUser();
@@ -58,7 +60,6 @@ public class Main {
 				case 6:
 					break;
 				case 7:
-					menuGenerateSpecialShift();
 					break;
 				case 9:
 					System.out.println(cs.getUsers().get(0));
@@ -88,7 +89,7 @@ public class Main {
 			}
 		}while( options != 8 );
 	}
-	
+
 	public void menuAddUser() {
 		int option = 0;
 		boolean xd = true;
@@ -158,10 +159,61 @@ public class Main {
 		}while( xd );
 	}
 	
-	public void menuGenerateShift() {
-		System.out.println("The shift generated was: ");
+	public void menuAddTypeOfShift() {
+		boolean xd = true;
+		do {
+			try {
+				System.out.print("Type the name of the new Shift: ");
+				String name = dataReader.nextLine();
+				System.out.print("Type the shift's duration: ");
+				double duration = dataReader.nextDouble();
+				dataReader.nextLine();
+				cs.addTypeOfShift(name, duration);
+				System.out.println("The new type of shift was added.");
+				xd = false;
+			}catch( InputMismatchException e ) {
+				System.out.println();
+				System.out.println("Enter a valid option.");
+				System.out.println();
+				dataReader.nextLine();
+			}catch( Exception e ) {
+				System.out.println();
+				System.out.println("Error!");
+				System.out.println();
+				dataReader.nextLine();
+			}
+		}while( xd );
 	}
 	
+	public void menuAddShift() {
+		boolean done = true;
+		do {
+			try {
+				System.out.println("Type the number of the shift.");
+				System.out.println();
+				System.out.println(cs.showSpecialShifts());
+				int option = dataReader.nextInt();
+				dataReader.nextLine();
+				cs.addShift(option);
+			}catch( InputMismatchException e ) {
+				System.out.println();
+				System.out.println("Enter a valid option.");
+				System.out.println();
+				dataReader.nextLine();
+			}catch( IndexOutOfBoundsException e ) {
+				System.out.println();
+				System.out.println("Enter the number on the screen.");
+				System.out.println();
+				dataReader.nextLine();
+			}catch( Exception e ) {
+				System.out.println();
+				System.out.println("Error!");
+				System.out.println();
+				dataReader.nextLine();
+			}
+		}while( !done );
+	}
+
 	public void menuSearchUser() {
 		System.out.println("Type the document number of the user.");
 		String documentNumber = dataReader.nextLine();
@@ -179,25 +231,6 @@ public class Main {
 		}else {
 			System.out.println("The next shift to attend is: " + cs.consultShiftToAttend());
 		}
-	}
-	
-	public void menuGenerateSpecialShift() {
-		boolean xd = true;
-		do {
-			try {
-				System.out.println("Type the name of the new shift.");
-				String name = dataReader.nextLine();
-				System.out.println("Type the duration of the shift.");
-				double duration = dataReader.nextDouble();
-				dataReader.nextLine();
-				cs.addSpecialShift(name, duration);
-				System.out.println("The new type of shift was generated.");
-				xd = false;
-			}catch( InputMismatchException e ) {
-				System.out.println("Enter a valid option.");
-				dataReader.nextLine();
-			}
-		}while( xd );
 	}
 	
 	public static void main(String[] args) {
