@@ -10,7 +10,7 @@ public class User implements Comparable<User>{
 	private String lastNames;
 	private String phone;
 	private String address;
-	private boolean attended;
+	private boolean available;
 	
 	private ArrayList<Shift> userShifts;
 
@@ -21,6 +21,7 @@ public class User implements Comparable<User>{
 		this.lastNames = lastNames;
 		this.phone = phone;
 		this.address = address;
+		available = true;
 		userShifts = new ArrayList<Shift>();
 	}
 
@@ -47,7 +48,15 @@ public class User implements Comparable<User>{
 	public String getAddress() {
 		return address;
 	}
-	
+
+	public boolean isAvailable() {
+		return available;
+	}
+
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
+
 	public ArrayList<Shift> getUserShifts() {
 		return userShifts;
 	}

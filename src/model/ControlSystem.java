@@ -210,15 +210,11 @@ public class ControlSystem {
 			}
 			for( int i = 0 ; i < users.size() && !status ; i++ ) {
 				user = users.get(i);
-				for( int j = 0 ; j < shifts.size() ; j++ ) {
-					if( user.getNames().compareToIgnoreCase(shifts.get(j).getUser().getNames()) == 0 ) {
-						status = false;
-					}else {
-						status = true;
-					}
-				}
+				if( user.isAvailable() == true )
+					status = true;
 			}
 			Shift shift = new Shift(letter, number, specialShifts.get(option - 1), user);
+			user.setAvailable(false);
 			user.getUserShifts().add(shift);
 			shifts.add(shift);
 			changeNumber();
@@ -321,6 +317,16 @@ public class ControlSystem {
 			data += (i + 1) + ") " + specialShifts.get(i);
 		}
 		return data;
+	}
+	
+	public User searchAvailableUser() {
+		User available = null;
+		for( int i = 0 ; i < users.size(); i++ ) {
+			if( users.get(i).isAvailable() ) {
+				available = users.get(i);
+			}
+		}
+		return available;
 	}
 	
 	public void changeLetter() {

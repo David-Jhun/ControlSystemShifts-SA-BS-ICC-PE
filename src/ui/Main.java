@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import exceptions.EmptyFieldException;
 import exceptions.ExistingDocumentException;
-import model.ControlSystem;
+import model.*;
 
 public class Main {
 	
@@ -58,6 +58,7 @@ public class Main {
 					menuConsultShiftToAttend();
 					break;
 				case 6:
+					test();
 					break;
 				case 7:
 					break;
@@ -212,6 +213,24 @@ public class Main {
 				dataReader.nextLine();
 			}
 		}while( !done );
+	}
+	
+	public void test() {
+		User u = new User("a", "a", "a", "a", "a", "a");
+		User u1 = new User("b", "b", "b", "b", "b", "b");
+		User xd = new User("c", "c", "c", "c", "c", "c");
+		TypeOfShift t = new TypeOfShift("a", 20);
+		TypeOfShift t1= new TypeOfShift("b", 10);
+		cs.getUsers().add(u);
+		cs.getUsers().add(xd);
+		cs.getSpecialShifts().add(t);
+		cs.getSpecialShifts().add(t1);
+		cs.addShift(1);
+		cs.addShift(1);
+		System.out.println(cs.getShifts().get(0));
+		System.out.println(cs.getShifts().get(0).getUser());
+		System.out.println(cs.getShifts().get(1));
+		System.out.println(cs.getShifts().get(1).getUser());
 	}
 
 	public void menuSearchUser() {
