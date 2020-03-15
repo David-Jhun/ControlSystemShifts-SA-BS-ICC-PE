@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Comparable<User>{
+public class User implements Comparable<User>, Serializable{
 	
 	private String typeOfDocument;
 	private String documentNumber;
@@ -64,6 +65,7 @@ public class User implements Comparable<User>{
 	@Override
 	public String toString() {
 		String data = "";
+		data += "\nUser";
 		data += "\nType of document: " + typeOfDocument + " " + "Document number: " + documentNumber;
 		data += "\nNames: " + names;
 		data += "\nLast names: " + lastNames;

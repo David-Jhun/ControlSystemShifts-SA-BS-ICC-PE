@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -17,10 +18,23 @@ public class Main {
 	private Scanner dataReader;
 	
 	public Main() {
-		cs = new ControlSystem();
-		dataReader = new Scanner(System.in);
-		employeeMenu();
-		dataReader.close();
+		try {
+			cs = new ControlSystem();
+			dataReader = new Scanner(System.in);
+			employeeMenu();
+			dataReader.close();	
+		}catch( FileNotFoundException e ) {
+			File newOneForUsers = new File("./data/users_information.txt");
+			File newOneForOtherShifts = new File("./data/special_information.txt");
+		}catch( ClassNotFoundException e ) {
+			System.out.println("");
+			System.out.println("The content is different.");
+			System.out.println("");
+		}catch( IOException e ) {
+			System.out.println("");
+			System.out.println("Error!");
+			System.out.println("");
+		}
 	}
 	
 	public void employeeMenu() {
@@ -33,8 +47,8 @@ public class Main {
 				System.out.println("1. Add an user.");
 				System.out.println("2. Add a new type of shift.");
 				System.out.println("3. Add a shift.");
-				System.out.println("4. .");
-				System.out.println("5. .");
+				System.out.println("4. Search an user.");
+				System.out.println("5. Search an user using binary search.");
 				System.out.println("6. .");
 				System.out.println("7. .");
 				System.out.println("8. Exit from the menu.");
@@ -55,10 +69,9 @@ public class Main {
 					menuSearchUser();
 					break;
 				case 5:
-					menuConsultShiftToAttend();
+					menuSearchUserBinary();
 					break;
 				case 6:
-					test();
 					break;
 				case 7:
 					break;
@@ -70,17 +83,17 @@ public class Main {
 						System.out.println("Enter a valid option.");
 					}else {
 						System.out.println("Thanks for using the program.");
-					}
-					try {
-						cs.saveSystemInformation();
-					}catch( FileNotFoundException e ) {
-						System.out.println("");
-						System.out.println("The file does not exist.");
-						System.out.println("");	
-					}catch( IOException e ) {
-						System.out.println("");
-						System.out.println("The file's name is not correct.");
-						System.out.println("");	
+						try {
+							cs.saveSystemInformation();
+						}catch( FileNotFoundException e ) {
+							System.out.println("");
+							System.out.println("The file does not exist.");
+							System.out.println("");	
+						}catch( IOException e ) {
+							System.out.println("");
+							System.out.println("The file's name is not correct.");
+							System.out.println("");	
+						}
 					}
 					break;
 				}
@@ -92,11 +105,14 @@ public class Main {
 	}
 
 	public void menuAddUser() {
+		long time1 = 0;
+		long time2 = 0;
+		long total = 0;
 		int option = 0;
 		boolean xd = true;
-		String typeOfDocument = "";
 		do {
 			try {
+				String typeOfDocument = "";
 				System.out.println();
 				System.out.println("Enter the option for the type of document.");
 				System.out.println("1. Identity card.");
@@ -125,6 +141,7 @@ public class Main {
 				String phone = dataReader.nextLine();
 				System.out.println("Type the user's address.");
 				String address = dataReader.nextLine();
+				time1 = System.currentTimeMillis();
 				if( typeOfDocument.equals("") ) {
 					throw new EmptyFieldException("The field <<Type of document>> can't be empty.");
 				}else if( documentNumber.equals("") ){
@@ -157,10 +174,16 @@ public class Main {
 				System.out.println("Error!");
 				dataReader.nextLine();
 			}
+			time2 = System.currentTimeMillis();
 		}while( xd );
+		total = time2 - time1;
+		System.out.println("The action was completed in: " + total);
 	}
 	
 	public void menuAddTypeOfShift() {
+		long time1 = 0;
+		long time2 = 0;
+		long total = 0;
 		boolean xd = true;
 		do {
 			try {
@@ -169,6 +192,7 @@ public class Main {
 				System.out.print("Type the shift's duration: ");
 				double duration = dataReader.nextDouble();
 				dataReader.nextLine();
+				time1 = System.currentTimeMillis();
 				cs.addTypeOfShift(name, duration);
 				System.out.println("The new type of shift was added.");
 				xd = false;
@@ -183,65 +207,87 @@ public class Main {
 				System.out.println();
 				dataReader.nextLine();
 			}
+			time2 = System.currentTimeMillis();
 		}while( xd );
+		total = time2 - time1;
+		System.out.println("The action was completed in: " + total);
 	}
 	
 	public void menuAddShift() {
+		long time1 = 0;
+		long time2 = 0;
+		long total = 0;
 		boolean done = true;
-		do {
-			try {
-				System.out.println("Type the number of the shift.");
-				System.out.println();
-				System.out.println(cs.showSpecialShifts());
-				int option = dataReader.nextInt();
-				dataReader.nextLine();
-				cs.addShift(option);
-			}catch( InputMismatchException e ) {
-				System.out.println();
-				System.out.println("Enter a valid option.");
-				System.out.println();
-				dataReader.nextLine();
-			}catch( IndexOutOfBoundsException e ) {
-				System.out.println();
-				System.out.println("Enter the number on the screen.");
-				System.out.println();
-				dataReader.nextLine();
-			}catch( Exception e ) {
-				System.out.println();
-				System.out.println("Error!");
-				System.out.println();
-				dataReader.nextLine();
-			}
-		}while( !done );
-	}
-	
-	public void test() {
-		User u = new User("a", "a", "a", "a", "a", "a");
-		User u1 = new User("b", "b", "b", "b", "b", "b");
-		User xd = new User("c", "c", "c", "c", "c", "c");
-		TypeOfShift t = new TypeOfShift("a", 20);
-		TypeOfShift t1= new TypeOfShift("b", 10);
-		cs.getUsers().add(u);
-		cs.getUsers().add(xd);
-		cs.getSpecialShifts().add(t);
-		cs.getSpecialShifts().add(t1);
-		cs.addShift(1);
-		cs.addShift(1);
-		System.out.println(cs.getShifts().get(0));
-		System.out.println(cs.getShifts().get(0).getUser());
-		System.out.println(cs.getShifts().get(1));
-		System.out.println(cs.getShifts().get(1).getUser());
+		if( !(cs.getSpecialShifts().isEmpty()) && !(cs.getUsers().isEmpty()) ) {
+			do {
+				try {
+					System.out.println("Type the number of the shift.");
+					System.out.println();
+					System.out.println(cs.showSpecialShifts());
+					int option = dataReader.nextInt();
+					dataReader.nextLine();
+					time1 = System.currentTimeMillis();
+					cs.addShift(option);
+					System.out.println("The shift was sucessfully added.");
+					done = false;
+				}catch( InputMismatchException e ) {
+					System.out.println();
+					System.out.println("Enter a valid option.");
+					System.out.println();
+					dataReader.nextLine();
+				}catch( IndexOutOfBoundsException e ) {
+					System.out.println();
+					System.out.println("Enter the number on the screen.");
+					System.out.println();
+					dataReader.nextLine();
+				}catch( Exception e ) {
+					System.out.println();
+					System.out.println("Error!");
+					System.out.println();
+					dataReader.nextLine();
+				}
+				time2 = System.currentTimeMillis();
+			}while( done );
+		}else {
+			System.out.println("There are not users and special shifts to add a new shift to the program.");
+		}
+		total = time2 - time1;
+		System.out.println("The action was completed in: " + total);
 	}
 
 	public void menuSearchUser() {
+		long time1 = 0;
+		long time2 = 0;
+		long total = 0;
 		System.out.println("Type the document number of the user.");
 		String documentNumber = dataReader.nextLine();
+		time1 = System.currentTimeMillis();
 		if( cs.searchUser(documentNumber) == null ) {
 			System.out.println("The user was not found.");
 		}else {
 			System.out.println("The user was successfully found.");
 			System.out.println(cs.searchUser(documentNumber));
 		}
+		time2 = System.currentTimeMillis();
+		total = time2 - time1;
+		System.out.println("The action was completed in: " + total);
+	}
+	
+	public void menuSearchUserBinary() {
+		long time1 = 0;
+		long time2 = 0;
+		long total = 0;
+		System.out.print("Type the document number of the user: ");
+		String documentNumber = dataReader.nextLine();
+		time1 = System.currentTimeMillis();
+		if( cs.existingUser(documentNumber) ) {
+			System.out.println(cs.binarySearchUsers(documentNumber));
+		}else {
+			System.out.println("The user was not found.");
+		}
+		time2 = System.currentTimeMillis();
+		total = time2 - time1;
+		System.out.println("The action was completed in: " + total);
 	}
 	
 	public void menuConsultShiftToAttend() {

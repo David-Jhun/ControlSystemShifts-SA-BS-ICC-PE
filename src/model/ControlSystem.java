@@ -31,21 +31,13 @@ public class ControlSystem {
 	
 	private ArrayList<TypeOfShift> specialShifts;
 	
-	public ControlSystem(){
+	public ControlSystem() throws FileNotFoundException, ClassNotFoundException, IOException{
 		letter  = 65;
 		number = 0;
 		users = new ArrayList<User>();
 		shifts = new ArrayList<Shift>();
 		specialShifts = new ArrayList<TypeOfShift>();
-		try {
-			loadSystemInformation();
-		}catch(FileNotFoundException e) {
-			
-		}catch(ClassNotFoundException e) {
-			
-		}catch(IOException e) {
-			
-		}
+		loadSystemInformation();
 	}
 
 	public ArrayList<User> getUsers() {
@@ -60,16 +52,17 @@ public class ControlSystem {
 		return specialShifts;
 	}
 
-	public void addUser(String typeOfDocument, String documentNumber, String names, String lastNames, String phone, String address) throws ExistingDocumentException{
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
+
+	public void setSpecialShifts(ArrayList<TypeOfShift> specialShifts) {
+		this.specialShifts = specialShifts;
+	}
+
+	public void addUser(String typeOfDocument, String documentNumber, String names, String lastNames, String phone, String address) throws ExistingDocumentException, FileNotFoundException, IOException{
 		User user = new User(typeOfDocument, documentNumber, names, lastNames, phone, address);
 		users.add(user);
-		try {
-			serializeUsers();
-		}catch(FileNotFoundException e) {
-			
-		}catch(IOException e) {
-			
-		}
 	}
 	
 	public User searchUser(String documentNumber) throws NullPointerException{
@@ -191,14 +184,13 @@ public class ControlSystem {
 		br.close();
 	}
 	
-	public void addTypeOfShift( String name, double duration ) {
+	public void addTypeOfShift( String name, double duration ) throws IOException {
 		TypeOfShift newOne = new TypeOfShift(name, duration);
 		specialShifts.add(newOne);
 	}
 
 	public void addShift( int option ) {
 		User user = null;
-		boolean status = false;
 		if( !(users.isEmpty()) && !(specialShifts.isEmpty()) ) {
 			if( letter > 90 )
 				letter = 65;
@@ -208,11 +200,7 @@ public class ControlSystem {
 				if( letter > 90 )
 					letter = 65;
 			}
-			for( int i = 0 ; i < users.size() && !status ; i++ ) {
-				user = users.get(i);
-				if( user.isAvailable() == true )
-					status = true;
-			}
+			user = searchAvailableUser();
 			Shift shift = new Shift(letter, number, specialShifts.get(option - 1), user);
 			user.setAvailable(false);
 			user.getUserShifts().add(shift);
@@ -246,8 +234,10 @@ public class ControlSystem {
 	}
 
 	public void saveSystemInformation() throws FileNotFoundException, IOException {
+		for( int i = 0 ; i < users.size() ; i++ ) {
+			users.get(i).setAvailable(true);
+		}
 		serializeUsers();
-		serializeShifts();
 		serializeSpecialShifts();
 	}
 
@@ -256,13 +246,7 @@ public class ControlSystem {
 		oos.writeObject(users);
 		oos.close();
 	}
-	
-	public void serializeShifts() throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/shifts_information.txt"));
-		oos.writeObject(shifts);
-		oos.close();
-	}
-	
+
 	public void serializeSpecialShifts() throws IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/special_information.txt"));
 		oos.writeObject(specialShifts);
@@ -271,25 +255,20 @@ public class ControlSystem {
 	
 	public void loadSystemInformation() throws FileNotFoundException, ClassNotFoundException, IOException{
 		loadUsersInformation();
-		loadShiftsInformation();
 		loadSpecialShiftsInformation();
 	}
 	
 	public void loadUsersInformation() throws FileNotFoundException, ClassNotFoundException, IOException {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/users_information.txt"));
-		ArrayList<User> savedU = (ArrayList<User>) ois.readObject() ;
+		ArrayList<User> savedU = (ArrayList<User>) ois.readObject();
+		setUsers(savedU);
 		ois.close();
 	}
-	
-	public void loadShiftsInformation() throws FileNotFoundException,  ClassNotFoundException, IOException {
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/shifts_information.txt"));
-		ArrayList<Shift> savedS = (ArrayList<Shift>) ois.readObject();
-		ois.close();
-	}
-	
+
 	public void loadSpecialShiftsInformation() throws FileNotFoundException, ClassNotFoundException, IOException{
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/special_information.txt"));
 		ArrayList<TypeOfShift> savedSpecial = (ArrayList<TypeOfShift>)ois.readObject();
+		setSpecialShifts(savedSpecial);
 		ois.close();
 	}
 	
@@ -321,9 +300,11 @@ public class ControlSystem {
 	
 	public User searchAvailableUser() {
 		User available = null;
-		for( int i = 0 ; i < users.size(); i++ ) {
+		boolean status = false;
+		for( int i = 0 ; i < users.size() && !status ; i++ ) {
 			if( users.get(i).isAvailable() ) {
 				available = users.get(i);
+				status = true;
 			}
 		}
 		return available;
