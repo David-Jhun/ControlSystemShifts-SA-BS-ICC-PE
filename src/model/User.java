@@ -13,7 +13,7 @@ public class User implements Comparable<User>, Serializable{
 	private String address;
 	private boolean available;
 	
-	private ArrayList<Shift> userShifts;
+	private ArrayList<Shift> myShifts;
 
 	public User(String typeOfDocument, String documentNumber, String names, String lastNames, String phone, String address) {
 		this.typeOfDocument = typeOfDocument;
@@ -23,7 +23,7 @@ public class User implements Comparable<User>, Serializable{
 		this.phone = phone;
 		this.address = address;
 		available = true;
-		userShifts = new ArrayList<Shift>();
+		myShifts = new ArrayList<Shift>();
 	}
 
 	public String getTypeOfDocument() {
@@ -58,8 +58,20 @@ public class User implements Comparable<User>, Serializable{
 		this.available = available;
 	}
 
-	public ArrayList<Shift> getUserShifts() {
-		return userShifts;
+	public ArrayList<Shift> getMyShifts() {
+		return myShifts;
+	}
+	
+	public boolean possessedSpecificShift( String shift ) {
+		boolean status = false;
+		if( !( myShifts.isEmpty() ) ) {
+			for( int i = 0 ; i < myShifts.size() ; i++ ) {
+				if( myShifts.get(i).getComplete().equalsIgnoreCase(shift) ) {
+					status = true;
+				}
+			}
+		}
+		return status;
 	}
 
 	@Override

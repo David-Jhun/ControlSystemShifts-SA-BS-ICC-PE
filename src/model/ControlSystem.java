@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
@@ -207,7 +208,7 @@ public class ControlSystem {
 			user = searchAvailableUser();
 			Shift shift = new Shift(letter, number, specialShifts.get(option - 1), user);
 			user.setAvailable(false);
-			user.getUserShifts().add(shift);
+			user.getMyShifts().add(shift);
 			shifts.add(shift);
 			changeNumber();
 		}
@@ -272,6 +273,35 @@ public class ControlSystem {
 				status = true;
 		}
 		return status;
+	}
+	
+	public void showUsersWithSpecificShiftFile( String shift ) throws FileNotFoundException {
+		File newFile = new File("./data/users_with_specific_shift");
+		PrintWriter writer = new PrintWriter( newFile );
+		writer.println("Users that had assigned the shift: " + shift);
+		for( int i = 0 ; i < users.size() ; i++ ) {
+			if( users.get(i).possessedSpecificShift(shift) ) {
+				writer.println();
+				writer.println(users.get(i).getDocumentNumber());
+				writer.println(users.get(i).getNames());
+				writer.println();
+			}
+		}
+		writer.close();
+	}
+	
+	public String showUsersWithSpecificShif( String shift ) {
+		String data = "";
+		data += "\nUsers that had assigned the shift: " + shift;
+		for( int i = 0 ; i < users.size() ; i++ ) {
+			if( users.get(i).possessedSpecificShift(shift) ) {
+				data += "\n";
+				data += "\n" + users.get(i).getDocumentNumber();
+				data += "\n" + users.get(i).getNames();
+				data += "\n";
+			}
+		}
+		return data;
 	}
 	
 	public String showSpecialShifts() {

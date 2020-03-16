@@ -36,8 +36,8 @@ public class Main {
 				System.out.println("4. Search an user.");
 				System.out.println("5. Search an user using by binary search.");
 				System.out.println("6. Add random users to the program.");
-				System.out.println("7. .");
-				System.out.println("8. Exit from the menu.");
+				System.out.println("7. Show all the users.");
+				System.out.println("20. Exit from the menu.");
 				System.out.println();
 				options = dataReader.nextInt();
 				dataReader.nextLine();
@@ -63,7 +63,7 @@ public class Main {
 				case 7:
 					break;
 				default:
-					if( options != 8 ) {
+					if( options != 20 ) {
 						System.out.println("Enter a valid option.");
 					}else {
 						System.out.println("Thanks for using the program.");
@@ -86,7 +86,7 @@ public class Main {
 				System.out.println("Enter a valid option.");
 				dataReader.nextLine();
 			}
-		}while( options != 8 );
+		}while( options != 20 );
 	}
 
 	public void menuAddUser() {
@@ -285,15 +285,15 @@ public class Main {
 				xd = false;
 			}catch( InputMismatchException e ) {
 				System.out.println();
-				System.out.println();
+				System.out.println("Enter a valid option.");
 				dataReader.nextLine();
 			}catch( IndexOutOfBoundsException e ) {
 				System.out.println();
-				System.out.println();
+				System.out.println("The number exceed the capacity of the file.");
 				dataReader.nextLine();
 			}catch( IOException e ) {
 				System.out.println();
-				System.out.println();
+				System.out.println("The file does not exist on the computer.");
 				xd = false;
 			}
 		}while( xd );
