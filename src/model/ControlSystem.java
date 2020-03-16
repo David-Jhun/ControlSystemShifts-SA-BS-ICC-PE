@@ -142,7 +142,7 @@ public class ControlSystem {
 		int end = users.size() - 1;
 		while( start <= end && !(founded) ) {
 			int mid = ( start + end ) / 2;
-			if( users.get(mid).getDocumentNumber().equals(documentNumber) ) {
+			if( users.get(mid).getDocumentNumber().compareTo(documentNumber) == 0 ) {
 				u = users.get(mid);
 				founded = true;
 			}else if( users.get(mid).getDocumentNumber().compareTo(documentNumber) > 0 ) {

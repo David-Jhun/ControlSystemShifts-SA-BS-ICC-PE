@@ -36,7 +36,7 @@ public class Main {
 				System.out.println("4. Search an user.");
 				System.out.println("5. Search an user using by binary search.");
 				System.out.println("6. Add random users to the program.");
-				System.out.println("7. Show all the users.");
+				System.out.println("7. Show a report of all the users that had a specific shift.");
 				System.out.println("20. Exit from the menu.");
 				System.out.println();
 				options = dataReader.nextInt();
@@ -61,6 +61,12 @@ public class Main {
 					menuGenerateRandomUsers();
 					break;
 				case 7:
+					menuShowReportOfUsers();
+					break;
+				case 8:
+					for( int i = 0 ; i < cs.getUsers().size() ; i++ ) {
+						System.out.println(cs.getUsers().get(i));
+					}
 					break;
 				default:
 					if( options != 20 ) {
@@ -294,6 +300,43 @@ public class Main {
 			}catch( IOException e ) {
 				System.out.println();
 				System.out.println("The file does not exist on the computer.");
+				xd = false;
+			}
+		}while( xd );
+	}
+	
+	public void menuShowReportOfUsers() {
+		boolean xd = true;
+		do {
+			try {
+				System.out.println("Type the shift to see the users that had it.");
+				String shift = dataReader.nextLine();
+				if( cs.existingShift(shift) ) {
+					System.out.println("Type the option that you want to do with the report.");
+					System.out.println("1. Show the report on the console.");
+					System.out.println("2. Show the report on a .txt file.");
+					int option = dataReader.nextInt();
+					dataReader.nextLine();
+					switch( option ) {
+					case 1:
+						System.out.println(cs.showUsersWithSpecificShif(shift));
+						break;
+					case 2:
+						cs.showUsersWithSpecificShiftFile(shift);
+						break;
+					}
+					xd = false;
+				}else {
+					System.out.println("The shift : " + shift + " does not exits."); 
+					xd = false;
+				}
+			}catch( InputMismatchException e ) {
+				System.out.println();
+				System.out.println("Enter a valid option.");
+				dataReader.nextLine();
+			}catch( IOException e ) {
+				System.out.println();
+				System.out.println("The path does not exist.");
 				xd = false;
 			}
 		}while( xd );
