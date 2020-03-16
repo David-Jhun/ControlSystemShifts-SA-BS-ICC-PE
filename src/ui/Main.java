@@ -58,6 +58,7 @@ public class Main {
 					menuSearchUserBinary();
 					break;
 				case 6:
+					menuGenerateRandomUsers();
 					break;
 				case 7:
 					break;
@@ -274,7 +275,28 @@ public class Main {
 	}
 	
 	public void menuGenerateRandomUsers() {
-		
+		boolean xd = true;
+		do {
+			try {
+				System.out.print("Type the number of users that you want to generate: ");
+				int quantity = dataReader.nextInt();
+				dataReader.nextLine();
+				cs.generateRandomUsers(quantity);
+				xd = false;
+			}catch( InputMismatchException e ) {
+				System.out.println();
+				System.out.println();
+				dataReader.nextLine();
+			}catch( IndexOutOfBoundsException e ) {
+				System.out.println();
+				System.out.println();
+				dataReader.nextLine();
+			}catch( IOException e ) {
+				System.out.println();
+				System.out.println();
+				xd = false;
+			}
+		}while( xd );
 	}
 	
 	public void menuConsultShiftToAttend() {

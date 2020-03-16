@@ -154,7 +154,7 @@ public class ControlSystem {
 	}
 	
 	public void generateRandomUsers( int quantity ) throws IOException{
-		File f = new File("./data/dataFromUsers.txt");
+		File f = new File("./data/RandomUsers.txt");
 		FileReader fr = new FileReader(f);
 		BufferedReader br = new BufferedReader(fr);
 		Random r = new Random();
@@ -183,7 +183,7 @@ public class ControlSystem {
 			User u = new User(typeOfDocument, documentNumber, names, lastNames, phone, address);
 			users.add(u);
 			counter++;
-		}while( counter != quantity && line != null );
+		}while( counter <= quantity && line != null );
 		fr.close();
 		br.close();
 	}
