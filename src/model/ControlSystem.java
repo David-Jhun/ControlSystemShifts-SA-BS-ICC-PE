@@ -134,24 +134,24 @@ public class ControlSystem {
 		users.sort(xd);
 	}
 	
-	public User binarySearchUsers( String documentNumber ) {
+	public String binarySearchUsers( String documentNumber ) {
 		sortUsersByInsertionSort();
-		User u = null;
+		String message = "";
 		boolean founded = false;
 		int start = 0;
 		int end = users.size() - 1;
-		while( start <= end && !(founded) ) {
+		while( start <= end && !founded ) {
 			int mid = ( start + end ) / 2;
 			if( users.get(mid).getDocumentNumber().compareTo(documentNumber) == 0 ) {
-				u = users.get(mid);
 				founded = true;
+				message = "" + users.get(mid);
 			}else if( users.get(mid).getDocumentNumber().compareTo(documentNumber) > 0 ) {
 				end = mid - 1;
 			}else {
 				start = mid + 1;
 			}
 		}
-		return u;
+		return message;
 	}
 	
 	public void generateRandomUsers( int quantity ) throws IOException{
@@ -253,7 +253,7 @@ public class ControlSystem {
 	public void loadUsersInformation() throws FileNotFoundException, ClassNotFoundException, IOException {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/users_information.txt"));
 		ArrayList<User> savedU = (ArrayList<User>) ois.readObject();
-		setUsers(savedU);
+		users = savedU;
 		ois.close();
 	}
 

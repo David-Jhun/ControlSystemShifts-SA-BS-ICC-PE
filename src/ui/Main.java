@@ -64,6 +64,7 @@ public class Main {
 					menuShowReportOfUsers();
 					break;
 				case 8:
+					cs.sortUsersByInsertionSort();
 					for( int i = 0 ; i < cs.getUsers().size() ; i++ ) {
 						System.out.println(cs.getUsers().get(i));
 					}
