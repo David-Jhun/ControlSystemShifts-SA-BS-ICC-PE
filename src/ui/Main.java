@@ -1,6 +1,5 @@
 package ui;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -18,23 +17,10 @@ public class Main {
 	private Scanner dataReader;
 	
 	public Main() {
-		try {
-			cs = new ControlSystem();
-			dataReader = new Scanner(System.in);
-			employeeMenu();
-			dataReader.close();	
-		}catch( FileNotFoundException e ) {
-			File newOneForUsers = new File("./data/users_information.txt");
-			File newOneForOtherShifts = new File("./data/special_information.txt");
-		}catch( ClassNotFoundException e ) {
-			System.out.println("");
-			System.out.println("The content is different.");
-			System.out.println("");
-		}catch( IOException e ) {
-			System.out.println("");
-			System.out.println("Error!");
-			System.out.println("");
-		}
+		cs = new ControlSystem();
+		dataReader = new Scanner(System.in);
+		employeeMenu();
+		dataReader.close();
 	}
 	
 	public void employeeMenu() {
@@ -48,8 +34,8 @@ public class Main {
 				System.out.println("2. Add a new type of shift.");
 				System.out.println("3. Add a shift.");
 				System.out.println("4. Search an user.");
-				System.out.println("5. Search an user using binary search.");
-				System.out.println("6. .");
+				System.out.println("5. Search an user using by binary search.");
+				System.out.println("6. Add random users to the program.");
 				System.out.println("7. .");
 				System.out.println("8. Exit from the menu.");
 				System.out.println();
@@ -75,9 +61,6 @@ public class Main {
 					break;
 				case 7:
 					break;
-				case 9:
-					System.out.println(cs.getUsers().get(0));
-					break;
 				default:
 					if( options != 8 ) {
 						System.out.println("Enter a valid option.");
@@ -85,6 +68,7 @@ public class Main {
 						System.out.println("Thanks for using the program.");
 						try {
 							cs.saveSystemInformation();
+							cs.serializeUsers();
 						}catch( FileNotFoundException e ) {
 							System.out.println("");
 							System.out.println("The file does not exist.");
@@ -249,7 +233,7 @@ public class Main {
 				time2 = System.currentTimeMillis();
 			}while( done );
 		}else {
-			System.out.println("There are not users and special shifts to add a new shift to the program.");
+			System.out.println("There are not users or special shifts to add a new shift to the program.");
 		}
 		total = time2 - time1;
 		System.out.println("The action was completed in: " + total);
@@ -265,7 +249,6 @@ public class Main {
 		if( cs.searchUser(documentNumber) == null ) {
 			System.out.println("The user was not found.");
 		}else {
-			System.out.println("The user was successfully found.");
 			System.out.println(cs.searchUser(documentNumber));
 		}
 		time2 = System.currentTimeMillis();
@@ -288,6 +271,10 @@ public class Main {
 		time2 = System.currentTimeMillis();
 		total = time2 - time1;
 		System.out.println("The action was completed in: " + total);
+	}
+	
+	public void menuGenerateRandomUsers() {
+		
 	}
 	
 	public void menuConsultShiftToAttend() {

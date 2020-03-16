@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class TypeOfShift implements Serializable{
+public class TypeOfShift{
 	
 	private String name;
 	private double duration;

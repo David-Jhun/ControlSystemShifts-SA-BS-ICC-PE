@@ -65,7 +65,7 @@ public class User implements Comparable<User>, Serializable{
 	@Override
 	public String toString() {
 		String data = "";
-		data += "\nUser";
+		data += "\nUser.";
 		data += "\nType of document: " + typeOfDocument + " " + "Document number: " + documentNumber;
 		data += "\nNames: " + names;
 		data += "\nLast names: " + lastNames;

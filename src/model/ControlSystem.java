@@ -31,13 +31,17 @@ public class ControlSystem {
 	
 	private ArrayList<TypeOfShift> specialShifts;
 	
-	public ControlSystem() throws FileNotFoundException, ClassNotFoundException, IOException{
+	public ControlSystem(){
 		letter  = 65;
 		number = 0;
 		users = new ArrayList<User>();
 		shifts = new ArrayList<Shift>();
 		specialShifts = new ArrayList<TypeOfShift>();
-		loadSystemInformation();
+		try {
+			loadUsersInformation();
+		}catch( Exception e ) {
+			File newOneForUsers = new File("./data/users_information.txt");
+		}
 	}
 
 	public ArrayList<User> getUsers() {
@@ -233,12 +237,10 @@ public class ControlSystem {
 	
 	}
 
-	public void saveSystemInformation() throws FileNotFoundException, IOException {
+	public void saveSystemInformation(){
 		for( int i = 0 ; i < users.size() ; i++ ) {
 			users.get(i).setAvailable(true);
 		}
-		serializeUsers();
-		serializeSpecialShifts();
 	}
 
 	public void serializeUsers() throws FileNotFoundException, IOException {
@@ -247,17 +249,6 @@ public class ControlSystem {
 		oos.close();
 	}
 
-	public void serializeSpecialShifts() throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/special_information.txt"));
-		oos.writeObject(specialShifts);
-		oos.close();
-	}
-	
-	public void loadSystemInformation() throws FileNotFoundException, ClassNotFoundException, IOException{
-		loadUsersInformation();
-		loadSpecialShiftsInformation();
-	}
-	
 	public void loadUsersInformation() throws FileNotFoundException, ClassNotFoundException, IOException {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/users_information.txt"));
 		ArrayList<User> savedU = (ArrayList<User>) ois.readObject();
@@ -265,13 +256,6 @@ public class ControlSystem {
 		ois.close();
 	}
 
-	public void loadSpecialShiftsInformation() throws FileNotFoundException, ClassNotFoundException, IOException{
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/special_information.txt"));
-		ArrayList<TypeOfShift> savedSpecial = (ArrayList<TypeOfShift>)ois.readObject();
-		setSpecialShifts(savedSpecial);
-		ois.close();
-	}
-	
 	public boolean existingUser(String documentNumber) {
 		boolean status = false;
 		for( int i = 0 ; i < users.size() ; i++ ) {
